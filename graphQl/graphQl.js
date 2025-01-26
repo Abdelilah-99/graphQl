@@ -58,11 +58,10 @@ async function getToken(username, password) {
             'Authorization': `Basic ${auth}`
         },
     })
+    let err = document.createElement('p')
     if (!r.ok) {
-        console.error("invalid credential")
-        let err = document.createElement('p')
-        err.innerHTML = "invalid credential"
-        document.getElementById('login-container').appendChild(err)
+        document.querySelector("button[type='submit']").disabled = false;
+        alert("invalid credential")
         return
     }
     let token = await r.json()
@@ -121,7 +120,6 @@ async function fetchData(query, token) {
 
     if (!dataUser.ok) return
     let response = await dataUser.json()
-    console.log("r: ", response)
     return response
 }
 
