@@ -9,21 +9,21 @@ const chartWidth = width - margin.left - margin.right;
 const chartHeight = height - margin.top - margin.bottom;
 document.addEventListener('DOMContentLoaded', () => {
     let token = localStorage.getItem('authToken')
-    if (token) {
+    if (token && token !== "undefined") {
         console.log(document.getElementById('xpProject'))
         profile(token)
     }else{
         document.getElementById('login-container').style.display = 'block'
         document.getElementById('login-form').addEventListener('submit', async (e) => {
-            //if (checkMultipleFetch) return
             checkMultipleFetch = 1
             e.preventDefault()
             document.querySelector("button[type='submit']").disabled = true
-
             let username = document.getElementById('username').value
             let password = document.getElementById('password').value
             console.log(username, password)
             token = await getToken(username, password)
+            if (token === "undefined") return
+            console.log(token);
             localStorage.setItem('authToken', token);
             console.log('Token saved!');
             profile(token)
@@ -33,18 +33,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.getElementById('logout').addEventListener('click', ()=>{
     svg.innerHTML = '';
-    
     document.getElementById('xpProgression').innerHTML = '';
     document.getElementById('xpProject').innerHTML = '';
-    
     let circleDetail = document.createElement('div');
     circleDetail.id = 'circleDetail';
     xpProgression.appendChild(circleDetail);
-    
     let rectDetail = document.createElement('div');
     rectDetail.id = 'rectDetail';
     xpProject.appendChild(rectDetail);
-    
     checkMultipleFetch = 0;
     document.querySelector("button[type='submit']").disabled = false;
     localStorage.removeItem('authToken');
@@ -64,6 +60,9 @@ async function getToken(username, password) {
     })
     if (!r.ok) {
         console.error("invalid credential")
+        let err = document.createElement('p')
+        err.innerHTML = "invalid credential"
+        document.getElementById('login-container').appendChild(err)
         return
     }
     let token = await r.json()
@@ -203,10 +202,17 @@ function letsWorkWithProgressXp(dataFetched) {
 }
 
 function letsWorkWithProjectXp(dataFetched) {
-    let arrObj = dataFetched.data.transaction.map(element => ({
-        path: element.path.split('/')[element.path.split('/').length - 1],
-        amount: (element.amount / 1000)
-    }));
+    let arrObj = dataFetched.data.transaction.map(element => {
+        const pathParts = element.path.split('/');
+        if (pathParts[3] !== 'checkpoint') {
+            return {
+                path: pathParts[3],
+                amount: element.amount / 1000
+            };
+        }
+        return null
+    }).filter(item => item !== null)
+    
 
     const maxAmount = Math.max(...arrObj.map(d => d.amount));
     console.log(maxAmount, chartHeight);
