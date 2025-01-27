@@ -1,10 +1,10 @@
 let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-let width = 1600
+let width = 1200
 let height = 400
 let checkMultipleFetch = 0
 svg.setAttribute('width', width);
-svg.setAttribute('height', height);
-let margin = { top: 20, right: 20, bottom: 100, left: 50 }
+svg.setAttribute('height', height-100);
+let margin = { top: 20, right: 20, bottom: 100, left: 300 }
 const chartWidth = width - margin.left - margin.right;
 const chartHeight = height - margin.top - margin.bottom;
 document.addEventListener('DOMContentLoaded', () => {
@@ -132,7 +132,9 @@ function letsWorkWithProfile(dataFetched) {
     profileContainer.style.background = 'white'
     profileContainer.style.borderRadius = '8px'
     profileContainer.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)'
-    profileContainer.style.margin = '20px'
+    profileContainer.style.textAlign = 'center'
+    profileContainer.style.width = '50%'
+    profileContainer.style.marginLeft = '25%'
     let firstname = document.createElement('h1')
     firstname.innerHTML = `First Name: ${dataFetched.data.user[0].firstName}`
     let lastname = document.createElement('h2')
