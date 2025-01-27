@@ -1,16 +1,4 @@
-/* createSVG() {
-    this.svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    this.svg.setAttribute("viewBox", `0 0 ${this.width + this.margin.left + this.margin.right} ${this.height + this.margin.top + this.margin.bottom}`);
-    this.svg.style.width = "100%";
-    this.svg.style.height = "100%";
-
-    // Create a group (g) element to contain all chart elements
-    this.g = document.createElementNS("http://www.w3.org/2000/svg", "g");
-    this.g.setAttribute("transform", `translate(${this.margin.left},${this.margin.top})`);
-
-    this.svg.appendChild(this.g);
-    this.container.appendChild(this.svg);
-} */
+let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
 let width = 1200
 let height = 400
 let checkMultipleFetch = 0
