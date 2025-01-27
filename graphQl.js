@@ -1,10 +1,21 @@
-let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+/* createSVG() {
+    this.svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    this.svg.setAttribute("viewBox", `0 0 ${this.width + this.margin.left + this.margin.right} ${this.height + this.margin.top + this.margin.bottom}`);
+    this.svg.style.width = "100%";
+    this.svg.style.height = "100%";
+
+    // Create a group (g) element to contain all chart elements
+    this.g = document.createElementNS("http://www.w3.org/2000/svg", "g");
+    this.g.setAttribute("transform", `translate(${this.margin.left},${this.margin.top})`);
+
+    this.svg.appendChild(this.g);
+    this.container.appendChild(this.svg);
+} */
 let width = 1200
 let height = 400
 let checkMultipleFetch = 0
-svg.setAttribute('width', width);
-svg.setAttribute('height', height);
-let margin = { top: 20, right: 20, bottom: 100, left: 25 }
+let margin = { top: 20, right: 20, bottom: 100, left: 50 }
+
 const chartWidth = width - margin.left - margin.right;
 const chartHeight = height - margin.top - margin.bottom;
 document.addEventListener('DOMContentLoaded', () => {
@@ -12,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (token && token !== "undefined") {
         console.log(document.getElementById('xpProject'))
         profile(token)
-    }else{
+    } else {
         document.getElementById('login-container').style.display = 'block'
         document.getElementById('login-form').addEventListener('submit', async (e) => {
             checkMultipleFetch = 1
@@ -31,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 })
 
-document.getElementById('logout').addEventListener('click', ()=>{
+document.getElementById('logout').addEventListener('click', () => {
     svg.innerHTML = '';
     document.getElementById('xpProgression').innerHTML = '';
     document.getElementById('xpProject').innerHTML = '';
@@ -71,7 +82,7 @@ async function getToken(username, password) {
 async function profile(token) {
     let userID = `{user{id}}`
     let fetchID = await fetchData(userID, token)
-    userID = fetchID.data.user[0].id    
+    userID = fetchID.data.user[0].id
     let data = `
     {
   user {
@@ -163,6 +174,10 @@ function letsWorkWithProgressXp(dataFetched) {
         oldValue += element.amount
         arrObj.push(currentObj)
     });
+    let svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`);
+    svg.style.width = "100%";
+    svg.style.height = "100%";
     console.log(arrObj);
     svg.innerHTML += `
     <line x1=${margin.left} y1=${margin.top} x2=${margin.left} y2=${height - margin.bottom} style="stroke:black;stroke-width:2" />
@@ -212,7 +227,7 @@ function letsWorkWithProjectXp(dataFetched) {
         }
         return null
     }).filter(item => item !== null)
-    
+
 
     const maxAmount = Math.max(...arrObj.map(d => d.amount));
     console.log(maxAmount, chartHeight);
@@ -222,8 +237,9 @@ function letsWorkWithProjectXp(dataFetched) {
     const barWidth = chartWidth / arrObj.length - 10;
 
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute("width", width);
-    svg.setAttribute("height", height);
+    svg.setAttribute("viewBox", `0 0 ${width + margin.left + margin.right} ${height + margin.top + margin.bottom}`);
+    svg.style.width = "100%";
+    svg.style.height = "100%";
 
     // Draw axes
     svg.innerHTML = `
