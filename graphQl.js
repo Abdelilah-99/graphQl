@@ -3,8 +3,8 @@ let width = 1200
 let height = 400
 let checkMultipleFetch = 0
 svg.setAttribute('width', width);
-svg.setAttribute('height', height-100);
-let margin = { top: 20, right: 20, bottom: 100, left: 300 }
+svg.setAttribute('height', height);
+let margin = { top: 20, right: 20, bottom: 100, left: 25 }
 const chartWidth = width - margin.left - margin.right;
 const chartHeight = height - margin.top - margin.bottom;
 document.addEventListener('DOMContentLoaded', () => {
@@ -218,7 +218,7 @@ function letsWorkWithProjectXp(dataFetched) {
     console.log(maxAmount, chartHeight);
 
     const cordinateX = (i) => ((i / (arrObj.length)) * chartWidth) + margin.left;
-    const yScale = d => chartHeight - (d / maxAmount) * chartHeight + margin.top;
+    const cordinateY = d => chartHeight - (d / maxAmount) * chartHeight + margin.top;
     const barWidth = chartWidth / arrObj.length - 10;
 
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -231,10 +231,10 @@ function letsWorkWithProjectXp(dataFetched) {
         <line x1="${margin.left}" y1="${height - margin.bottom}" x2="${width - margin.right}" y2="${height - margin.bottom}" style="stroke:black;stroke-width:2" />
     `;
 
-    const yTickCount = 5;
-    for (let i = 0; i <= yTickCount; i++) {
-        const value = (maxAmount * i) / yTickCount;
-        const y = yScale(value);
+    const randomPost = 5;
+    for (let i = 0; i <= randomPost; i++) {
+        const value = (maxAmount * i) / randomPost;
+        const y = cordinateY(value);
         svg.innerHTML += `
             <line 
                 x1="${margin.left - 5}" 
@@ -255,7 +255,7 @@ function letsWorkWithProjectXp(dataFetched) {
 
     arrObj.forEach((d, i) => {
         const x = cordinateX(i);
-        const y = yScale(d.amount);
+        const y = cordinateY(d.amount);
         const barHeight = chartHeight - y + margin.top;
 
         svg.innerHTML += `
